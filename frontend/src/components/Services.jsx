@@ -5,7 +5,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
 const ICONS = { Home, FileText, TrendingUp };
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },

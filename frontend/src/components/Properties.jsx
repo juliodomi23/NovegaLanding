@@ -4,7 +4,7 @@ import { BedDouble, Bath, Maximize, MapPin, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20una%20propiedad.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20una%20propiedad.';
 
 export default function Properties() {
   const { lang } = useLanguage();

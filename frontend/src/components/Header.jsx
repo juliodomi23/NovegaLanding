@@ -3,7 +3,8 @@ import { Menu, X } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
+const LOGO_URL = 'https://customer-assets.emergentagent.com/job_novega-landing/artifacts/m2prel8t_logo%20final%20de%20novega%20-%20Novega%20Bienes%20Ra%C3%ADces.png';
 
 export default function Header() {
   const { lang, setLang } = useLanguage();
@@ -47,13 +48,11 @@ export default function Header() {
           onClick={(e) => { e.preventDefault(); handleNav('#home'); }}
           className="flex items-center gap-3 group"
         >
-          <div className="w-9 h-9 bg-[#D4AF37] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-[#C5A059]">
-            <span className="text-black font-bold text-base font-serif tracking-tight">N</span>
-          </div>
-          <div className="leading-none">
-            <div className="text-[#F5F5F0] font-serif tracking-[0.15em] text-sm font-semibold">NOVEGA</div>
-            <div className="text-[#A1A1AA] tracking-[0.18em] text-[9px] uppercase font-sans mt-0.5">BIENES RAÍCES</div>
-          </div>
+          <img
+            src={LOGO_URL}
+            alt="Novega Bienes Raíces"
+            className="h-11 w-auto object-contain"
+          />
         </a>
 
         {/* Desktop Nav */}

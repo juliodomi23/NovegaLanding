@@ -7,7 +7,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
+const MAPS_URL = 'https://maps.app.goo.gl/WAaLFeELQFsyt9gx6';
 
 export default function Contact() {
   const { lang } = useLanguage();
@@ -181,6 +182,17 @@ export default function Contact() {
                   <p className="text-sm text-[#A1A1AA] font-sans font-light leading-relaxed whitespace-pre-line pl-5">
                     {item.value}
                   </p>
+                  {i === 0 && (
+                    <a
+                      href={MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-testid="contact-maps-link"
+                      className="text-xs text-[#D4AF37] hover:text-[#C5A059] font-sans transition-colors duration-300 pl-5 mt-1 inline-block underline underline-offset-2"
+                    >
+                      Ver en Google Maps
+                    </a>
+                  )}
                 </div>
               );
             })}

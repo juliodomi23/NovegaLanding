@@ -4,8 +4,8 @@ import { MapPin, Clock, CheckCircle, Star, MessageCircle, Mail } from 'lucide-re
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20interesa%20la%20vacante%20de%20Agente%20de%20Ventas%20Inmobiliarias.%20Adjunto%20mi%20CV.';
-const EMAIL_URL = 'mailto:rrhh@gruponovega.com.mx?subject=Vacante%20Agente%20de%20Ventas&body=Hola%2C%20me%20interesa%20la%20vacante.%20Adjunto%20mi%20CV.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20interesa%20la%20vacante%20de%20Agente%20de%20Ventas%20Inmobiliarias.%20Adjunto%20mi%20CV.';
+const EMAIL_URL = 'mailto:novegabienesraices@gmail.com?subject=Vacante%20Agente%20de%20Ventas&body=Hola%2C%20me%20interesa%20la%20vacante.%20Adjunto%20mi%20CV.';
 
 export default function JobBoard() {
   const { lang } = useLanguage();

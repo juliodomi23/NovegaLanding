@@ -2,7 +2,8 @@ import { MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
+const LOGO_URL = 'https://customer-assets.emergentagent.com/job_novega-landing/artifacts/m2prel8t_logo%20final%20de%20novega%20-%20Novega%20Bienes%20Ra%C3%ADces.png';
 
 const SOCIALS = [
   {
@@ -85,13 +86,11 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 bg-[#D4AF37] flex items-center justify-center flex-shrink-0">
-                <span className="text-black font-bold text-base font-serif">N</span>
-              </div>
-              <div>
-                <div className="text-[#F5F5F0] font-serif tracking-[0.15em] text-sm font-semibold">NOVEGA</div>
-                <div className="text-[#A1A1AA] tracking-[0.18em] text-[9px] uppercase font-sans mt-0.5">BIENES RAÍCES</div>
-              </div>
+              <img
+                src={LOGO_URL}
+                alt="Novega Bienes Raíces"
+                className="h-14 w-auto object-contain"
+              />
             </div>
             <p className="text-xs text-[#A1A1AA] font-sans font-light leading-relaxed mb-5">
               {t.description}
@@ -164,8 +163,17 @@ export default function Footer() {
                 AV. CENTRAL PTE. 847 C.7ª PTE. Y C.8ª PTE.<br />
                 Tuxtla Gutiérrez, Chiapas, C.P. 29000
               </p>
-              <p className="text-xs text-[#A1A1AA] font-sans">contacto@gruponovega.com.mx</p>
-              <p className="text-xs text-[#A1A1AA] font-sans">+52 961 000 0000</p>
+              <p className="text-xs text-[#A1A1AA] font-sans">novegabienesraices@gmail.com</p>
+              <p className="text-xs text-[#A1A1AA] font-sans">+52 961 462 5879</p>
+              <a
+                href="https://maps.app.goo.gl/WAaLFeELQFsyt9gx6"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="footer-maps-link"
+                className="text-xs text-[#D4AF37] hover:text-[#C5A059] font-sans transition-colors duration-300 underline underline-offset-2"
+              >
+                Ver en Google Maps
+              </a>
             </div>
           </div>
         </div>

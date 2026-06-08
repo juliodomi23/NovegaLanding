@@ -4,7 +4,7 @@ import { MessageCircle, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
-const WHATSAPP_URL = 'https://wa.me/5296100000000?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20gratuita.';
+const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20gratuita.';
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920';
 
 export default function Hero() {

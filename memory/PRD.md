@@ -41,10 +41,11 @@ Landing page de lanzamiento para GRUPO NOVEGA BIENES RAICES S.A DE C.V. Empresa 
 - `src/constants/translations.js` - Todas las traducciones ES + EN
 - `src/context/LanguageContext.js` - Estado global del idioma
 
-## Contact/Brand Info (Placeholder - Update Before Launch)
-- WhatsApp: +52 961 000 0000 ← **ACTUALIZAR con número real**
-- Email: contacto@gruponovega.com.mx ← **ACTUALIZAR con correo real**
-- RRHH Email: rrhh@gruponovega.com.mx ← **ACTUALIZAR con correo real**
+## Contact/Brand Info (REAL DATA - Updated June 7, 2026)
+- WhatsApp: +52 961 462 5879 (número real actualizado)
+- Email: novegabienesraices@gmail.com (correo real)
+- Google Maps: https://maps.app.goo.gl/WAaLFeELQFsyt9gx6
+- Logo: Logo real integrado (casa azul marino + "NovEgA")
 
 ## Social Media (Active)
 - Facebook: https://www.facebook.com/NovegaBienesRaices
