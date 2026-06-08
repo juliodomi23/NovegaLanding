@@ -1,0 +1,118 @@
+{
+  "project_context": {
+    "company_name": "GRUPO NOVEGA BIENES RAICES S.A DE C.V",
+    "slogan": "PATRIMONIO QUE INSPIRA FUTURO",
+    "location": "Tuxtla Gutiérrez, Chiapas",
+    "target_audience": "Medium-high purchasing power, investors, real estate agents",
+    "theme": "Dark",
+    "archetype": "Archetype 5 (Luxury)"
+  },
+  "design_system": {
+    "color_palette": {
+      "background": {
+        "primary": "#0A0A0A",
+        "secondary": "#111111",
+        "tertiary": "#1A1A1A"
+      },
+      "text": {
+        "primary": "#F5F5F0",
+        "secondary": "#A1A1AA",
+        "accent": "#D4AF37"
+      },
+      "brand": {
+        "primary": "#D4AF37",
+        "primary_hover": "#C5A059",
+        "accent": "#8C6A2E",
+        "border": "rgba(255, 255, 255, 0.1)"
+      },
+      "surfaces": {
+        "glass_header": "rgba(10, 10, 10, 0.7)",
+        "card_bg": "rgba(255, 255, 255, 0.03)",
+        "card_hover": "rgba(255, 255, 255, 0.05)"
+      }
+    },
+    "typography": {
+      "fonts": {
+        "headings": "Cormorant Garamond, serif",
+        "body": "Outfit, sans-serif"
+      },
+      "scales": {
+        "h1": "text-5xl md:text-6xl tracking-tighter leading-none font-serif",
+        "h2": "text-3xl md:text-4xl tracking-tight leading-snug font-serif",
+        "h3": "text-2xl md:text-3xl tracking-tight font-serif",
+        "body_large": "text-lg text-[#A1A1AA] font-sans font-light leading-relaxed",
+        "body": "text-base text-[#A1A1AA] font-sans font-light leading-relaxed",
+        "label": "text-xs tracking-[0.2em] uppercase text-[#D4AF37] font-sans font-medium"
+      }
+    },
+    "layout_and_spacing": {
+      "philosophy": "Generous breathing room, bento grid structures, optical alignment over strict geometric alignment, and intentional asymmetry.",
+      "container": "max-w-7xl mx-auto px-6 md:px-12",
+      "section_spacing": "py-24 md:py-32",
+      "grid_patterns": {
+        "services": "grid grid-cols-1 md:grid-cols-3 gap-8",
+        "about": "grid grid-cols-1 md:grid-cols-12 gap-12 items-center",
+        "featured": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      }
+    },
+    "components": {
+      "buttons": {
+        "primary": "bg-[#D4AF37] text-black font-medium py-3 px-8 hover:bg-[#C5A059] transition-all duration-300 font-sans tracking-wide flex items-center justify-center gap-2",
+        "outline": "border border-[#D4AF37] text-[#D4AF37] font-medium py-3 px-8 hover:bg-[#D4AF37] hover:text-black transition-all duration-300 font-sans tracking-wide flex items-center justify-center gap-2",
+        "ghost": "text-white hover:text-[#D4AF37] transition-colors duration-300 font-sans"
+      },
+      "cards": {
+        "service": "bg-[#ffffff]/[0.03] border border-white/10 p-8 hover:bg-[#ffffff]/[0.05] hover:border-[#D4AF37]/50 transition-all duration-500 group flex flex-col",
+        "property": "group relative overflow-hidden bg-[#ffffff]/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500",
+        "job": "border-b border-white/10 py-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:bg-white/5 transition-colors px-4 -mx-4"
+      },
+      "header": {
+        "style": "fixed top-0 w-full z-50 backdrop-blur-xl bg-[#0A0A0A]/70 border-b border-white/10 transition-all duration-300"
+      },
+      "hero_overlay": "absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-[#0A0A0A]/10 z-10"
+    },
+    "interactions": {
+      "hover": "Subtle opacity and border color changes, text color highlights.",
+      "motion": "Use smooth, restrained transitions. e.g., transition-all duration-500 ease-out.",
+      "image_zoom": "On hover, property images scale up slightly: group-hover:scale-105 transition-transform duration-700 ease-out."
+    }
+  },
+  "media_assets": {
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1748063578185-3d68121b11ff?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBtb2Rlcm4lMjBob3VzZSUyMGV4dGVyaW9yJTIwbmlnaHR8ZW58MHx8fHwxNzgwOTQzODYwfDA&ixlib=rb-4.1.0&q=85",
+      "description": "Modern house exterior glowing at night. High contrast luxury."
+    },
+    "about_team": {
+      "url": "https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwYnVzaW5lc3MlMjB0ZWFtfGVufDB8fHx8MTc4MDk0Mzg2MHww&ixlib=rb-4.1.0&q=85",
+      "description": "Elegant business team representing the 5 partners."
+    },
+    "landscape_context": {
+      "url": "https://images.unsplash.com/photo-1632614567386-465d63c603bb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHwzfHxjaGlhcGFzJTIwbWV4aWNvJTIwbGFuZHNjYXBlfGVufDB8fHx8MTc4MDk0Mzg2MHww&ixlib=rb-4.1.0&q=85",
+      "description": "Chiapas landscape (Sumidero canyon style) to root the company locally. Use as a subtle parallax or section background."
+    },
+    "service_interior": {
+      "url": "https://images.unsplash.com/photo-1628745277862-bc0b2d68c50c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjByZWFsJTIwZXN0YXRlJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzgwOTQzODYwfDA&ixlib=rb-4.1.0&q=85",
+      "description": "Luxury modern interior for the Patrimonial Management section."
+    },
+    "property_1": {
+      "url": "https://images.pexels.com/photos/31737859/pexels-photo-31737859.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Elegant residential architecture illuminated at night."
+    },
+    "property_2": {
+      "url": "https://images.pexels.com/photos/31737860/pexels-photo-31737860.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Modern luxury house exterior lit up at night."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Load Google Fonts in the root HTML or CSS: Cormorant Garamond and Outfit.",
+    "Implement a Dark Theme strictly as defined in color_palette. Do not use generic Shadcn gray/white default colors.",
+    "Bilingual toggle logic: Maintain a state (ES/EN) that swaps content JSONs or text maps. Header must contain the toggle (e.g., 'EN / ES' ghost button).",
+    "Add 'data-testid' to ALL interactive elements (e.g., data-testid='whatsapp-hero-cta', data-testid='lang-toggle-btn').",
+    "Hero Section: Full viewport height (min-h-screen). Absolute positioning for the hero image with the gradient overlay. H1 text-5xl to text-6xl, font-serif. Call-to-action must be prominently Gold, linking to WhatsApp.",
+    "Services Section: 3-column bento grid. Each card should display pricing transparently. Use lucide-react icons (e.g., Home, Briefcase, TrendingUp) with gold accent.",
+    "About Section: Asymmetric layout. Text on one side (col-span-12 md:col-span-5), team image on the other (col-span-12 md:col-span-7). High-end editorial feel.",
+    "Job Board Section: Use clean list items, not bulky cards. Show role 'Agente de Ventas Inmobiliarias'. Provide an 'Apply' outline button.",
+    "Contact & Footer: Create a form leveraging Shadcn UI components but heavily styled to match the dark luxury theme (transparent inputs with white bottom borders, no heavy white background). Include WhatsApp button in the footer.",
+    "Use Phosphor Icons or Lucide-React for crisp, elegant iconography. Maintain a 1px stroke for a refined look."
+  ]
+}
