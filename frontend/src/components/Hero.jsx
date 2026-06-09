@@ -23,11 +23,11 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <img
           src={HERO_IMAGE}
-          alt="Grupo Novega Bienes Raices"
+          alt="Residencia de lujo en Tuxtla Gutiérrez, Chiapas — Grupo Novega Bienes Raíces"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/60 to-[#0A0A0A]/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/60 to-[#0A1628]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A1628]/80 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
@@ -45,8 +45,8 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="inline-flex items-center gap-2 mb-8"
           >
-            <div className="w-8 h-px bg-[#D4AF37]" />
-            <span className="text-[#D4AF37] text-xs tracking-[0.25em] uppercase font-sans font-medium">
+            <div className="w-8 h-px bg-[#D9AE4E]" />
+            <span className="text-[#D9AE4E] text-xs tracking-[0.25em] uppercase font-sans font-medium">
               {t.badge}
             </span>
           </motion.div>
@@ -56,11 +56,11 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-[#F5F5F0] leading-none tracking-tight mb-6"
+            className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-[#EEF2F8] leading-none tracking-tight mb-6"
           >
             {t.line1}
             <br />
-            <span className="text-[#D4AF37]">{t.line2}</span>
+            <span className="text-[#D9AE4E]">{t.line2}</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -68,7 +68,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="text-base md:text-lg text-[#A1A1AA] font-sans font-light leading-relaxed mb-10 max-w-xl"
+            className="text-base md:text-lg text-[#7A9BB5] font-sans font-light leading-relaxed mb-10 max-w-xl"
           >
             {t.subtitle}
           </motion.p>
@@ -85,7 +85,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               data-testid="whatsapp-hero-cta"
-              className="inline-flex items-center justify-center gap-2.5 bg-[#D4AF37] text-black font-sans font-semibold text-sm tracking-[0.08em] px-7 py-4 hover:bg-[#C5A059] transition-all duration-300 group"
+              className="inline-flex items-center justify-center gap-2.5 bg-[#D9AE4E] text-black font-sans font-semibold text-sm tracking-[0.08em] px-7 py-4 hover:bg-[#C49A38] transition-all duration-300 group"
             >
               <MessageCircle size={17} className="group-hover:scale-110 transition-transform" />
               {t.cta1}
@@ -93,7 +93,7 @@ export default function Hero() {
             <button
               data-testid="services-hero-cta"
               onClick={handleScrollToServices}
-              className="inline-flex items-center justify-center gap-2 border border-[#D4AF37] text-[#D4AF37] font-sans font-medium text-sm tracking-[0.08em] px-7 py-4 hover:bg-[#D4AF37] hover:text-black transition-all duration-300"
+              className="cursor-pointer inline-flex items-center justify-center gap-2 border border-[#D9AE4E] text-[#D9AE4E] font-sans font-medium text-sm tracking-[0.08em] px-7 py-4 hover:bg-[#D9AE4E] hover:text-black transition-all duration-300"
             >
               {t.cta2}
             </button>
@@ -109,8 +109,8 @@ export default function Hero() {
         >
           {[t.stat1, t.stat2, t.stat3].map((stat, i) => (
             <div key={i} className="text-center" data-testid={`hero-stat-${i}`}>
-              <div className="text-2xl md:text-3xl font-serif text-[#D4AF37] font-semibold">{stat.value}</div>
-              <div className="text-[10px] tracking-[0.18em] uppercase text-[#A1A1AA] font-sans mt-1">{stat.label}</div>
+              <div className="text-2xl md:text-3xl font-serif text-[#D9AE4E] font-semibold">{stat.value}</div>
+              <div className="text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans mt-1">{stat.label}</div>
             </div>
           ))}
         </motion.div>
@@ -127,7 +127,7 @@ export default function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ChevronDown size={20} className="text-[#A1A1AA]" />
+          <ChevronDown size={20} className="text-[#7A9BB5]" />
         </motion.div>
       </motion.div>
     </section>

@@ -60,11 +60,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0A0A0A] border-t border-white/10">
+    <footer className="bg-[#0A1628] border-t border-[#406788]/25">
       {/* Top Bar - Gold CTA */}
-      <div className="bg-[#D4AF37]/10 border-b border-[#D4AF37]/20">
+      <div className="bg-[#D9AE4E]/10 border-b border-[#D9AE4E]/20">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm font-serif text-[#F5F5F0] italic">
+          <p className="text-sm font-serif text-[#EEF2F8] italic">
             "{t.tagline}"
           </p>
           <a
@@ -72,7 +72,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             data-testid="footer-whatsapp-cta"
-            className="inline-flex items-center gap-2 bg-[#D4AF37] text-black text-xs tracking-[0.12em] uppercase font-sans font-semibold px-6 py-2.5 hover:bg-[#C5A059] transition-colors duration-300 flex-shrink-0"
+            className="inline-flex items-center gap-2 bg-[#D9AE4E] text-black text-xs tracking-[0.12em] uppercase font-sans font-semibold px-6 py-2.5 hover:bg-[#C49A38] transition-colors duration-300 flex-shrink-0"
           >
             <MessageCircle size={14} />
             WhatsApp
@@ -92,12 +92,12 @@ export default function Footer() {
                 className="h-14 w-auto object-contain"
               />
             </div>
-            <p className="text-xs text-[#A1A1AA] font-sans font-light leading-relaxed mb-5">
+            <p className="text-xs text-[#7A9BB5] font-sans font-light leading-relaxed mb-5">
               {t.description}
             </p>
             {/* Social Icons */}
             <div>
-              <div className="text-[9px] tracking-[0.22em] uppercase text-[#D4AF37] font-sans font-medium mb-3">
+              <div className="text-[9px] tracking-[0.22em] uppercase text-[#D9AE4E] font-sans font-medium mb-3">
                 {t.socialTitle}
               </div>
               <div className="flex items-center gap-3">
@@ -109,7 +109,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     data-testid={`footer-social-${s.id}`}
                     aria-label={s.label}
-                    className="w-9 h-9 border border-white/10 flex items-center justify-center text-[#A1A1AA] hover:text-[#D4AF37] hover:border-[#D4AF37]/50 transition-all duration-300"
+                    className="w-9 h-9 border border-[#406788]/25 flex items-center justify-center text-[#7A9BB5] hover:text-[#D9AE4E] hover:border-[#D9AE4E]/50 transition-all duration-300"
                   >
                     {s.icon}
                   </a>
@@ -120,7 +120,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <div className="text-[9px] tracking-[0.22em] uppercase text-[#D4AF37] font-sans font-medium mb-5">
+            <div className="text-[9px] tracking-[0.22em] uppercase text-[#D9AE4E] font-sans font-medium mb-5">
               {t.navTitle}
             </div>
             <ul className="space-y-3">
@@ -130,7 +130,7 @@ export default function Footer() {
                     href={item.href}
                     data-testid={`footer-nav-${item.href.replace('#', '')}`}
                     onClick={(e) => { e.preventDefault(); handleNav(item.href); }}
-                    className="text-xs text-[#A1A1AA] hover:text-[#D4AF37] transition-colors duration-300 font-sans"
+                    className="text-xs text-[#7A9BB5] hover:text-[#D9AE4E] transition-colors duration-300 font-sans"
                   >
                     {item.label}
                   </a>
@@ -141,13 +141,13 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <div className="text-[9px] tracking-[0.22em] uppercase text-[#D4AF37] font-sans font-medium mb-5">
+            <div className="text-[9px] tracking-[0.22em] uppercase text-[#D9AE4E] font-sans font-medium mb-5">
               {t.servicesTitle}
             </div>
             <ul className="space-y-3">
               {t.servicesList.map((s, i) => (
                 <li key={i}>
-                  <span className="text-xs text-[#A1A1AA] font-sans">{s}</span>
+                  <span className="text-xs text-[#7A9BB5] font-sans">{s}</span>
                 </li>
               ))}
             </ul>
@@ -155,22 +155,22 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <div className="text-[9px] tracking-[0.22em] uppercase text-[#D4AF37] font-sans font-medium mb-5">
+            <div className="text-[9px] tracking-[0.22em] uppercase text-[#D9AE4E] font-sans font-medium mb-5">
               CONTACTO
             </div>
             <div className="space-y-3">
-              <p className="text-xs text-[#A1A1AA] font-sans leading-relaxed">
+              <p className="text-xs text-[#7A9BB5] font-sans leading-relaxed">
                 AV. CENTRAL PTE. 847 C.7ª PTE. Y C.8ª PTE.<br />
                 Tuxtla Gutiérrez, Chiapas, C.P. 29000
               </p>
-              <p className="text-xs text-[#A1A1AA] font-sans">novegabienesraices@gmail.com</p>
-              <p className="text-xs text-[#A1A1AA] font-sans">+52 961 462 5879</p>
+              <p className="text-xs text-[#7A9BB5] font-sans">novegabienesraices@gmail.com</p>
+              <p className="text-xs text-[#7A9BB5] font-sans">+52 961 462 5879</p>
               <a
                 href="https://maps.app.goo.gl/WAaLFeELQFsyt9gx6"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="footer-maps-link"
-                className="text-xs text-[#D4AF37] hover:text-[#C5A059] font-sans transition-colors duration-300 underline underline-offset-2"
+                className="text-xs text-[#D9AE4E] hover:text-[#C49A38] font-sans transition-colors duration-300 underline underline-offset-2"
               >
                 Ver en Google Maps
               </a>
@@ -180,12 +180,12 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/10">
+      <div className="border-t border-[#406788]/25">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-[10px] text-[#A1A1AA]/60 font-sans tracking-[0.08em]">
+          <p className="text-[10px] text-[#7A9BB5]/60 font-sans tracking-[0.08em]">
             {t.legal} · {t.rights}
           </p>
-          <p className="text-[10px] text-[#A1A1AA]/40 font-sans">{t.disclaimer}</p>
+          <p className="text-[10px] text-[#7A9BB5]/40 font-sans">{t.disclaimer}</p>
         </div>
       </div>
     </footer>

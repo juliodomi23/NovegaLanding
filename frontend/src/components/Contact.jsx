@@ -43,7 +43,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-[#0A0A0A]" ref={ref}>
+    <section id="contact" className="py-24 md:py-32 bg-[#0A1628]" ref={ref}>
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Header */}
         <motion.div
@@ -53,15 +53,15 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-8 h-px bg-[#D4AF37]" />
-            <span className="text-[#D4AF37] text-xs tracking-[0.25em] uppercase font-sans font-medium">
+            <div className="w-8 h-px bg-[#D9AE4E]" />
+            <span className="text-[#D9AE4E] text-xs tracking-[0.25em] uppercase font-sans font-medium">
               {t.badge}
             </span>
-            <div className="w-8 h-px bg-[#D4AF37]" />
+            <div className="w-8 h-px bg-[#D9AE4E]" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif text-[#F5F5F0]">{t.title}</h2>
-          <h2 className="text-3xl md:text-4xl font-serif text-[#D4AF37] mb-4">{t.titleAccent}</h2>
-          <p className="text-base text-[#A1A1AA] font-sans font-light max-w-xl mx-auto">{t.subtitle}</p>
+          <h2 className="text-3xl md:text-4xl font-serif text-[#EEF2F8]">{t.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-[#D9AE4E] mb-4">{t.titleAccent}</h2>
+          <p className="text-base text-[#7A9BB5] font-sans font-light max-w-xl mx-auto">{t.subtitle}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12">
@@ -79,10 +79,11 @@ export default function Contact() {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] tracking-[0.2em] uppercase text-[#A1A1AA] font-sans font-medium">
+                  <label htmlFor="contact-name" className="text-[10px] tracking-[0.2em] uppercase text-[#7A9BB5] font-sans font-medium">
                     {t.formName}
                   </label>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     required
@@ -90,14 +91,15 @@ export default function Contact() {
                     onChange={handleChange}
                     data-testid="contact-name-input"
                     placeholder={t.formName}
-                    className="bg-transparent border-0 border-b border-white/20 focus:border-[#D4AF37] text-[#F5F5F0] font-sans text-sm py-2.5 outline-none transition-colors duration-300 placeholder:text-white/20"
+                    className="bg-transparent border-0 border-b border-[#406788]/40 focus:border-[#D9AE4E] text-[#EEF2F8] font-sans text-sm py-2.5 outline-none transition-colors duration-300 placeholder:text-white/20"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] tracking-[0.2em] uppercase text-[#A1A1AA] font-sans font-medium">
+                  <label htmlFor="contact-email" className="text-[10px] tracking-[0.2em] uppercase text-[#7A9BB5] font-sans font-medium">
                     {t.formEmail}
                   </label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     required
@@ -105,29 +107,31 @@ export default function Contact() {
                     onChange={handleChange}
                     data-testid="contact-email-input"
                     placeholder={t.formEmail}
-                    className="bg-transparent border-0 border-b border-white/20 focus:border-[#D4AF37] text-[#F5F5F0] font-sans text-sm py-2.5 outline-none transition-colors duration-300 placeholder:text-white/20"
+                    className="bg-transparent border-0 border-b border-[#406788]/40 focus:border-[#D9AE4E] text-[#EEF2F8] font-sans text-sm py-2.5 outline-none transition-colors duration-300 placeholder:text-white/20"
                   />
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] tracking-[0.2em] uppercase text-[#A1A1AA] font-sans font-medium">
+                <label htmlFor="contact-phone" className="text-[10px] tracking-[0.2em] uppercase text-[#7A9BB5] font-sans font-medium">
                   {t.formPhone}
                 </label>
                 <input
+                  id="contact-phone"
                   type="tel"
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
                   data-testid="contact-phone-input"
                   placeholder={t.formPhone}
-                  className="bg-transparent border-0 border-b border-white/20 focus:border-[#D4AF37] text-[#F5F5F0] font-sans text-sm py-2.5 outline-none transition-colors duration-300 placeholder:text-white/20"
+                  className="bg-transparent border-0 border-b border-[#406788]/40 focus:border-[#D9AE4E] text-[#EEF2F8] font-sans text-sm py-2.5 outline-none transition-colors duration-300 placeholder:text-white/20"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] tracking-[0.2em] uppercase text-[#A1A1AA] font-sans font-medium">
+                <label htmlFor="contact-message" className="text-[10px] tracking-[0.2em] uppercase text-[#7A9BB5] font-sans font-medium">
                   {t.formMessage.split('...')[0]}
                 </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   required
                   rows={5}
@@ -135,7 +139,7 @@ export default function Contact() {
                   onChange={handleChange}
                   data-testid="contact-message-input"
                   placeholder={t.formMessage}
-                  className="bg-transparent border-0 border-b border-white/20 focus:border-[#D4AF37] text-[#F5F5F0] font-sans text-sm py-2.5 outline-none transition-colors duration-300 resize-none placeholder:text-white/20"
+                  className="bg-transparent border-0 border-b border-[#406788]/40 focus:border-[#D9AE4E] text-[#EEF2F8] font-sans text-sm py-2.5 outline-none transition-colors duration-300 resize-none placeholder:text-white/20"
                 />
               </div>
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
@@ -143,7 +147,7 @@ export default function Contact() {
                   type="submit"
                   disabled={submitting}
                   data-testid="contact-submit-btn"
-                  className="inline-flex items-center justify-center gap-2 bg-[#D4AF37] text-black font-sans font-semibold text-xs tracking-[0.1em] uppercase px-8 py-4 hover:bg-[#C5A059] transition-colors duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 bg-[#D9AE4E] text-black font-sans font-semibold text-xs tracking-[0.1em] uppercase px-8 py-4 hover:bg-[#C49A38] transition-colors duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Send size={14} />
                   {submitting ? t.formSending : t.formSubmit}
@@ -153,7 +157,7 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-testid="contact-whatsapp-btn"
-                  className="inline-flex items-center justify-center gap-2 border border-[#D4AF37] text-[#D4AF37] font-sans font-medium text-xs tracking-[0.1em] uppercase px-8 py-4 hover:bg-[#D4AF37] hover:text-black transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-2 border border-[#D9AE4E] text-[#D9AE4E] font-sans font-medium text-xs tracking-[0.1em] uppercase px-8 py-4 hover:bg-[#D9AE4E] hover:text-black transition-all duration-300"
                 >
                   <MessageCircle size={14} />
                   {t.whatsappCta}
@@ -174,12 +178,12 @@ export default function Contact() {
               return (
                 <div key={i} data-testid={`contact-info-${i}`}>
                   <div className="flex items-center gap-2 mb-2">
-                    <Icon size={13} className="text-[#D4AF37]" />
-                    <span className="text-[9px] tracking-[0.22em] uppercase text-[#D4AF37] font-sans font-medium">
+                    <Icon size={13} className="text-[#D9AE4E]" />
+                    <span className="text-[9px] tracking-[0.22em] uppercase text-[#D9AE4E] font-sans font-medium">
                       {item.label}
                     </span>
                   </div>
-                  <p className="text-sm text-[#A1A1AA] font-sans font-light leading-relaxed whitespace-pre-line pl-5">
+                  <p className="text-sm text-[#7A9BB5] font-sans font-light leading-relaxed whitespace-pre-line pl-5">
                     {item.value}
                   </p>
                   {i === 0 && (
@@ -188,7 +192,7 @@ export default function Contact() {
                       target="_blank"
                       rel="noopener noreferrer"
                       data-testid="contact-maps-link"
-                      className="text-xs text-[#D4AF37] hover:text-[#C5A059] font-sans transition-colors duration-300 pl-5 mt-1 inline-block underline underline-offset-2"
+                      className="text-xs text-[#D9AE4E] hover:text-[#C49A38] font-sans transition-colors duration-300 pl-5 mt-1 inline-block underline underline-offset-2"
                     >
                       Ver en Google Maps
                     </a>
