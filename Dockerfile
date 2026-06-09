@@ -1,5 +1,5 @@
 # Build
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY frontend/package.json frontend/yarn.lock* ./
 RUN yarn install --frozen-lockfile
