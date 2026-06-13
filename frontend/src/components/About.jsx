@@ -38,17 +38,17 @@ export default function About() {
               {t.titleAccent}
             </h2>
 
-            <p className="text-base text-[#7A9BB5] font-sans font-light leading-relaxed mb-5">
-              {t.body}
-            </p>
-
-            {/* Legal backing highlight */}
-            <div className="flex items-start gap-3 mb-8 bg-[#D9AE4E]/5 border border-[#D9AE4E]/20 px-4 py-3">
-              <div className="w-1 h-full min-h-[2rem] bg-[#D9AE4E] flex-shrink-0 mt-0.5" />
+            {/* Legal backing highlight — antes de la descripción */}
+            <div className="flex items-start gap-3 mb-6 bg-[#D9AE4E]/5 border border-[#D9AE4E]/20 px-4 py-3">
+              <div className="w-1 self-stretch min-h-[2rem] bg-[#D9AE4E] flex-shrink-0" />
               <p className="text-sm text-[#D9AE4E]/90 font-sans font-light leading-relaxed italic">
                 {t.legalBacking}
               </p>
             </div>
+
+            <p className="text-base text-[#7A9BB5] font-sans font-light leading-relaxed mb-8">
+              {t.body}
+            </p>
 
             {/* Mission */}
             <div className="border-l-2 border-[#D9AE4E] pl-5 mb-8">
