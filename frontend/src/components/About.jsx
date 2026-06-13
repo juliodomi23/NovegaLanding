@@ -38,9 +38,17 @@ export default function About() {
               {t.titleAccent}
             </h2>
 
-            <p className="text-base text-[#7A9BB5] font-sans font-light leading-relaxed mb-8">
+            <p className="text-base text-[#7A9BB5] font-sans font-light leading-relaxed mb-5">
               {t.body}
             </p>
+
+            {/* Legal backing highlight */}
+            <div className="flex items-start gap-3 mb-8 bg-[#D9AE4E]/5 border border-[#D9AE4E]/20 px-4 py-3">
+              <div className="w-1 h-full min-h-[2rem] bg-[#D9AE4E] flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-[#D9AE4E]/90 font-sans font-light leading-relaxed italic">
+                {t.legalBacking}
+              </p>
+            </div>
 
             {/* Mission */}
             <div className="border-l-2 border-[#D9AE4E] pl-5 mb-8">
@@ -90,10 +98,10 @@ export default function About() {
               {/* Decorative corner */}
               <div className="absolute -bottom-4 -left-4 w-24 h-24 border-l-2 border-b-2 border-[#D9AE4E] opacity-60" />
               <div className="absolute -top-4 -right-4 w-24 h-24 border-r-2 border-t-2 border-[#D9AE4E] opacity-60" />
-              {/* Founded badge */}
+              {/* Certified badge */}
               <div className="absolute bottom-6 right-6 bg-[#0A1628]/90 backdrop-blur-sm border border-[#406788]/25 px-5 py-4 text-center">
-                <div className="text-[#D9AE4E] font-serif text-2xl font-semibold">2026</div>
-                <div className="text-[#7A9BB5] text-[9px] tracking-[0.2em] uppercase font-sans mt-0.5">Fundación</div>
+                <div className="text-[#D9AE4E] font-serif text-lg font-semibold leading-tight">Asesores</div>
+                <div className="text-[#7A9BB5] text-[9px] tracking-[0.2em] uppercase font-sans mt-0.5">Certificados</div>
               </div>
             </div>
           </motion.div>

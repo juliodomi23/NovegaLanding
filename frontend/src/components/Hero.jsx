@@ -1,17 +1,43 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { MessageCircle, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
 const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20gratuita.';
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920';
+
+const CAROUSEL_IMAGES = [
+  {
+    src: 'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920',
+    alt: 'Residencia de lujo — Grupo Novega Bienes Raíces',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920',
+    alt: 'Casa moderna premium — Grupo Novega',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920',
+    alt: 'Desarrollo residencial Chiapas — Grupo Novega',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920',
+    alt: 'Propiedad premium Tuxtla Gutiérrez — Grupo Novega',
+  },
+];
 
 export default function Hero() {
   const { lang } = useLanguage();
   const t = translations[lang].hero;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleScrollToServices = () => {
     document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
@@ -19,15 +45,40 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col justify-center overflow-hidden" ref={ref}>
-      {/* Background Image */}
+      {/* Carousel Background */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={HERO_IMAGE}
-          alt="Residencia de lujo en Tuxtla Gutiérrez, Chiapas — Grupo Novega Bienes Raíces"
-          className="w-full h-full object-cover object-center"
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            <img
+              src={CAROUSEL_IMAGES[current].src}
+              alt={CAROUSEL_IMAGES[current].alt}
+              className="w-full h-full object-cover object-center"
+            />
+          </motion.div>
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/60 to-[#0A1628]/20" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A1628]/80 via-transparent to-transparent" />
+      </div>
+
+      {/* Carousel Dots */}
+      <div className="absolute bottom-16 right-8 z-10 flex flex-col gap-2">
+        {CAROUSEL_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+              i === current ? 'bg-[#D9AE4E] h-4' : 'bg-[#7A9BB5]/40 hover:bg-[#7A9BB5]'
+            }`}
+            aria-label={`Slide ${i + 1}`}
+          />
+        ))}
       </div>
 
       {/* Content */}

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { BedDouble, Bath, Maximize, MapPin, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -11,6 +11,17 @@ export default function Properties() {
   const t = translations[lang].properties;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const [filter, setFilter] = useState('all');
+
+  const filtered = filter === 'all'
+    ? t.items
+    : t.items.filter((p) => p.category === filter);
+
+  const filters = [
+    { key: 'all', label: t.filterAll },
+    { key: 'venta', label: t.filterVenta },
+    { key: 'renta', label: t.filterRenta },
+  ];
 
   return (
     <section id="properties" className="py-24 md:py-32 bg-[#0A1628]" ref={ref}>
@@ -20,7 +31,7 @@ export default function Properties() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="w-8 h-px bg-[#D9AE4E]" />
@@ -34,9 +45,31 @@ export default function Properties() {
           <p className="text-base text-[#7A9BB5] font-sans font-light max-w-xl mx-auto">{t.subtitle}</p>
         </motion.div>
 
+        {/* Filter Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="flex items-center justify-center gap-2 mb-12"
+        >
+          {filters.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={`cursor-pointer px-5 py-2 text-xs tracking-[0.15em] uppercase font-sans font-medium transition-all duration-300 border ${
+                filter === f.key
+                  ? 'bg-[#D9AE4E] text-black border-[#D9AE4E]'
+                  : 'border-[#406788]/40 text-[#7A9BB5] hover:border-[#D9AE4E]/50 hover:text-[#D9AE4E]'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </motion.div>
+
         {/* Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {t.items.map((property, i) => (
+          {filtered.map((property, i) => (
             <motion.div
               key={property.id}
               initial={{ opacity: 0, y: 30 }}
@@ -60,10 +93,14 @@ export default function Properties() {
                     {property.type}
                   </span>
                 </div>
-                {/* Hot Badge */}
+                {/* Status Badge */}
                 {property.badge && (
-                  <div className="absolute top-4 right-4 bg-[#D9AE4E] px-3 py-1">
-                    <span className="text-[10px] tracking-[0.18em] uppercase text-black font-sans font-semibold">
+                  <div className={`absolute top-4 right-4 px-3 py-1 ${
+                    property.category === 'renta' ? 'bg-[#406788]' : 'bg-[#D9AE4E]'
+                  }`}>
+                    <span className={`text-[10px] tracking-[0.18em] uppercase font-sans font-semibold ${
+                      property.category === 'renta' ? 'text-white' : 'text-black'
+                    }`}>
                       {property.badge}
                     </span>
                   </div>

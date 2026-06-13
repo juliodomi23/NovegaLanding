@@ -6,9 +6,12 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
+import Trayectoria from '@/components/Trayectoria';
 import Services from '@/components/Services';
 import Properties from '@/components/Properties';
+import Desarrollos from '@/components/Desarrollos';
 import PropertiesMap from '@/components/PropertiesMap';
+import Marketing from '@/components/Marketing';
 import JobBoard from '@/components/JobBoard';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
@@ -23,9 +26,12 @@ function App() {
           <main>
             <Hero />
             <About />
+            <Trayectoria />
             <Services />
             <Properties />
+            <Desarrollos />
             <PropertiesMap />
+            <Marketing />
             <JobBoard />
             <Contact />
           </main>

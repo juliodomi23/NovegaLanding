@@ -1,17 +1,53 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { MapPin, Clock, CheckCircle, Star, MessageCircle, Mail } from 'lucide-react';
+import { MapPin, Clock, CheckCircle, Star, Mail, Paperclip, Send } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
-const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20interesa%20la%20vacante%20de%20Agente%20de%20Ventas%20Inmobiliarias.%20Adjunto%20mi%20CV.';
-const EMAIL_URL = 'mailto:novegabienesraices@gmail.com?subject=Vacante%20Agente%20de%20Ventas&body=Hola%2C%20me%20interesa%20la%20vacante.%20Adjunto%20mi%20CV.';
+const AGENCY_EMAIL = 'novegabienesraices@gmail.com';
 
 export default function JobBoard() {
   const { lang } = useLanguage();
   const t = translations[lang].jobs;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
+
+  const [form, setForm] = useState({ name: '', email: '', message: '', file: null });
+  const [fileName, setFileName] = useState('');
+  const [status, setStatus] = useState('idle');
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setForm((prev) => ({ ...prev, file }));
+      setFileName(file.name);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.name || !form.email) return;
+
+    setStatus('sending');
+
+    const subject = encodeURIComponent(`Solicitud de Empleo - ${form.name}`);
+    const body = encodeURIComponent(
+      `Nombre: ${form.name}\nCorreo: ${form.email}\n\n${form.message}\n\n` +
+      (fileName ? `CV adjunto: ${fileName}\n(Por favor adjunta tu CV manualmente a este correo)` : '')
+    );
+
+    window.location.href = `mailto:${AGENCY_EMAIL}?subject=${subject}&body=${body}`;
+
+    setTimeout(() => {
+      setStatus('success');
+      setForm({ name: '', email: '', message: '', file: null });
+      setFileName('');
+    }, 800);
+  };
 
   return (
     <section id="jobs" className="py-24 md:py-32 bg-[#132436]" ref={ref}>
@@ -118,31 +154,108 @@ export default function JobBoard() {
             </div>
           </div>
 
-          {/* Apply Section */}
+          {/* CV Upload Form */}
           <div className="p-6 md:p-8 bg-[#D9AE4E]/5 border-t border-[#406788]/25">
             <h4 className="text-lg font-serif text-[#EEF2F8] mb-1">{t.applyTitle}</h4>
-            <p className="text-sm text-[#7A9BB5] font-sans mb-5">{t.applySubtitle}</p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-testid="job-apply-whatsapp"
-                className="inline-flex items-center justify-center gap-2 bg-[#D9AE4E] text-black text-xs tracking-[0.1em] uppercase font-sans font-semibold px-6 py-3 hover:bg-[#C49A38] transition-colors duration-300"
+            <p className="text-sm text-[#7A9BB5] font-sans mb-6">{t.applySubtitle}</p>
+
+            {status === 'success' ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-3 bg-[#D9AE4E]/10 border border-[#D9AE4E]/30 px-5 py-4"
               >
-                <MessageCircle size={14} />
-                {t.whatsappCta}
-              </a>
-              <a
-                href={EMAIL_URL}
-                data-testid="job-apply-email"
-                className="inline-flex items-center justify-center gap-2 border border-[#D9AE4E] text-[#D9AE4E] text-xs tracking-[0.1em] uppercase font-sans font-medium px-6 py-3 hover:bg-[#D9AE4E] hover:text-black transition-all duration-300"
-              >
-                <Mail size={14} />
-                {t.emailCta}
-              </a>
-            </div>
-            <p className="text-[10px] text-[#7A9BB5]/70 font-sans mt-4">{t.applyNote}</p>
+                <CheckCircle size={18} className="text-[#D9AE4E] flex-shrink-0" />
+                <p className="text-sm text-[#D9AE4E] font-sans">{t.formSuccess}</p>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans mb-2">
+                      {t.formName} *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      required
+                      placeholder={t.formName}
+                      className="w-full bg-[#0A1628]/60 border border-[#406788]/30 text-[#EEF2F8] placeholder-[#7A9BB5]/50 text-sm font-sans px-4 py-3 focus:outline-none focus:border-[#D9AE4E]/50 transition-colors duration-300"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans mb-2">
+                      {t.formEmail} *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
+                      placeholder={t.formEmail}
+                      className="w-full bg-[#0A1628]/60 border border-[#406788]/30 text-[#EEF2F8] placeholder-[#7A9BB5]/50 text-sm font-sans px-4 py-3 focus:outline-none focus:border-[#D9AE4E]/50 transition-colors duration-300"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans mb-2">
+                    {t.formMessage}
+                  </label>
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    rows={3}
+                    placeholder={t.formMessage}
+                    className="w-full bg-[#0A1628]/60 border border-[#406788]/30 text-[#EEF2F8] placeholder-[#7A9BB5]/50 text-sm font-sans px-4 py-3 focus:outline-none focus:border-[#D9AE4E]/50 transition-colors duration-300 resize-none"
+                  />
+                </div>
+
+                {/* File Upload */}
+                <div>
+                  <label className="block text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans mb-2">
+                    {t.formFile}
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer bg-[#0A1628]/60 border border-[#406788]/30 hover:border-[#D9AE4E]/40 px-4 py-3 transition-colors duration-300 group">
+                    <Paperclip size={15} className="text-[#D9AE4E] flex-shrink-0" />
+                    <span className="text-sm font-sans text-[#7A9BB5] group-hover:text-[#EEF2F8] transition-colors truncate">
+                      {fileName || (lang === 'es' ? 'Seleccionar archivo PDF...' : 'Select PDF file...')}
+                    </span>
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      onChange={handleFile}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-4 pt-2">
+                  <button
+                    type="submit"
+                    disabled={status === 'sending'}
+                    data-testid="job-apply-submit"
+                    className="inline-flex items-center justify-center gap-2 bg-[#D9AE4E] text-black text-xs tracking-[0.1em] uppercase font-sans font-semibold px-7 py-3 hover:bg-[#C49A38] transition-colors duration-300 disabled:opacity-60"
+                  >
+                    <Send size={13} />
+                    {status === 'sending' ? t.formSending : t.formSubmit}
+                  </button>
+                  <a
+                    href={`mailto:${AGENCY_EMAIL}?subject=${encodeURIComponent('Solicitud de Empleo - Agente de Ventas')}`}
+                    data-testid="job-apply-email"
+                    className="inline-flex items-center gap-2 border border-[#D9AE4E] text-[#D9AE4E] text-xs tracking-[0.1em] uppercase font-sans font-medium px-6 py-3 hover:bg-[#D9AE4E] hover:text-black transition-all duration-300"
+                  >
+                    <Mail size={13} />
+                    {t.emailCta}
+                  </a>
+                </div>
+                <p className="text-[10px] text-[#7A9BB5]/70 font-sans">{t.applyNote}</p>
+              </form>
+            )}
           </div>
         </motion.div>
       </div>

@@ -4,7 +4,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 
 const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n.';
-const LOGO_URL = 'https://customer-assets.emergentagent.com/job_novega-landing/artifacts/m2prel8t_logo%20final%20de%20novega%20-%20Novega%20Bienes%20Ra%C3%ADces.png';
+const LOGO_URL = '/images/logo.png';
 
 export default function Header() {
   const { lang, setLang } = useLanguage();
@@ -52,6 +52,7 @@ export default function Header() {
             src={LOGO_URL}
             alt="Novega Bienes Raíces"
             className="h-11 w-auto object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
           />
         </a>
 
