@@ -10,6 +10,7 @@ import About from '@/components/About';
 import Trayectoria from '@/components/Trayectoria';
 import Services from '@/components/Services';
 import Properties from '@/components/Properties';
+import SellProperty from '@/components/SellProperty';
 import Desarrollos from '@/components/Desarrollos';
 import PropertiesMap from '@/components/PropertiesMap';
 import Marketing from '@/components/Marketing';
@@ -28,6 +29,7 @@ function MainSite() {
         <Trayectoria />
         <Services />
         <Properties />
+        <SellProperty />
         <Desarrollos />
         <PropertiesMap />
         <Marketing />
