@@ -1,4 +1,5 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, UploadFile, File, HTTPException, Body
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -17,6 +18,12 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+UPLOAD_DIR = ROOT_DIR / 'uploads'
+UPLOAD_DIR.mkdir(exist_ok=True)
+ALLOWED_IMAGE_TYPES = {'image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml'}
+MAX_UPLOAD_SIZE = 5 * 1024 * 1024  # 5MB
+CMS_COLLECTIONS = {'advisors', 'properties', 'developments'}
 
 app = FastAPI(title="Grupo Novega API")
 api_router = APIRouter(prefix="/api")
@@ -66,9 +73,44 @@ async def get_contact_messages():
     return docs
 
 
+# ── CMS (asesores, propiedades, desarrollos) ──────────────────────────────────
+
+@api_router.get("/cms")
+async def get_cms():
+    result = {}
+    for key in CMS_COLLECTIONS:
+        doc = await db.cms.find_one({"_id": key})
+        result[key] = doc["items"] if doc else []
+    return result
+
+
+@api_router.put("/cms/{collection}")
+async def save_cms_collection(collection: str, items: List[dict] = Body(...)):
+    if collection not in CMS_COLLECTIONS:
+        raise HTTPException(status_code=404, detail="Colección no encontrada")
+    await db.cms.update_one({"_id": collection}, {"$set": {"items": items}}, upsert=True)
+    return {"success": True}
+
+
+# ── Subida de imágenes ─────────────────────────────────────────────────────────
+
+@api_router.post("/upload")
+async def upload_image(file: UploadFile = File(...)):
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=400, detail="Tipo de archivo no permitido")
+    contents = await file.read()
+    if len(contents) > MAX_UPLOAD_SIZE:
+        raise HTTPException(status_code=400, detail="La imagen no debe superar 5MB")
+    ext = Path(file.filename or '').suffix.lower() or '.bin'
+    filename = f"{uuid.uuid4().hex}{ext}"
+    (UPLOAD_DIR / filename).write_bytes(contents)
+    return {"url": f"/api/uploads/{filename}"}
+
+
 # ── App ───────────────────────────────────────────────────────────────────────
 
 app.include_router(api_router)
+app.mount("/api/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,

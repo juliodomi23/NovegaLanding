@@ -46,8 +46,12 @@ export default function Trayectoria() {
               transition={{ duration: 0.6, delay: i * 0.12 }}
               className="bg-[#406788]/10 border border-[#406788]/25 hover:border-[#D9AE4E]/40 transition-all duration-500 p-6 flex flex-col"
             >
-              <div className="w-14 h-14 bg-[#D9AE4E]/10 border border-[#D9AE4E]/25 flex items-center justify-center mb-5">
-                <Award size={22} className="text-[#D9AE4E]" />
+              <div className="w-14 h-14 bg-[#D9AE4E]/10 border border-[#D9AE4E]/25 flex items-center justify-center mb-5 overflow-hidden">
+                {advisor.photo ? (
+                  <img src={advisor.photo} alt={advisor.name} className="w-full h-full object-cover" />
+                ) : (
+                  <Award size={22} className="text-[#D9AE4E]" />
+                )}
               </div>
 
               <h3 className="text-base font-serif text-[#EEF2F8] mb-1 leading-snug">{advisor.name}</h3>
@@ -58,11 +62,17 @@ export default function Trayectoria() {
                   Certificaciones
                 </div>
                 {advisor.certs.map((cert, j) => {
+                  const name = typeof cert === 'string' ? cert : cert.name;
+                  const image = typeof cert === 'string' ? '' : cert.image;
                   const Icon = CERT_ICONS[j % CERT_ICONS.length];
                   return (
                     <div key={j} className="flex items-center gap-2">
-                      <Icon size={11} className="text-[#D9AE4E] flex-shrink-0" />
-                      <span className="text-[11px] text-[#7A9BB5] font-sans">{cert}</span>
+                      {image ? (
+                        <img src={image} alt={name} className="w-4 h-4 object-contain flex-shrink-0" />
+                      ) : (
+                        <Icon size={11} className="text-[#D9AE4E] flex-shrink-0" />
+                      )}
+                      <span className="text-[11px] text-[#7A9BB5] font-sans">{name}</span>
                     </div>
                   );
                 })}

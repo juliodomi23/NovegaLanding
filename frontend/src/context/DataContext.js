@@ -1,12 +1,13 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
-const STORAGE_KEY = 'novega_cms_v1';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const DEFAULT_ADVISORS = [
-  { id: 1, name: 'Asesor Inmobiliario Senior', role: 'Especialista en Bienes Raíces', certs: ['Certificado AMPI', 'Valuador Certificado', 'Crédito Hipotecario'] },
-  { id: 2, name: 'Abogado Fiscalista', role: 'Asesor Legal Inmobiliario', certs: ['Cédula Profesional', 'Derecho Fiscal', 'Derecho Inmobiliario'] },
-  { id: 3, name: 'Gestor de Desarrollos', role: 'Especialista en Proyectos', certs: ['Certificado PMI', 'Análisis de Mercado', 'Valuación Comercial'] },
-  { id: 4, name: 'Agente Comercial', role: 'Comercialización Integral', certs: ['Negociación Avanzada', 'Marketing Inmobiliario', 'CRM Especializado'] },
+  { id: 1, name: 'Asesor Inmobiliario Senior', role: 'Especialista en Bienes Raíces', photo: '', certs: [{ name: 'Certificado AMPI', image: '' }, { name: 'Valuador Certificado', image: '' }, { name: 'Crédito Hipotecario', image: '' }] },
+  { id: 2, name: 'Abogado Fiscalista', role: 'Asesor Legal Inmobiliario', photo: '', certs: [{ name: 'Cédula Profesional', image: '' }, { name: 'Derecho Fiscal', image: '' }, { name: 'Derecho Inmobiliario', image: '' }] },
+  { id: 3, name: 'Gestor de Desarrollos', role: 'Especialista en Proyectos', photo: '', certs: [{ name: 'Certificado PMI', image: '' }, { name: 'Análisis de Mercado', image: '' }, { name: 'Valuación Comercial', image: '' }] },
+  { id: 4, name: 'Agente Comercial', role: 'Comercialización Integral', photo: '', certs: [{ name: 'Negociación Avanzada', image: '' }, { name: 'Marketing Inmobiliario', image: '' }, { name: 'CRM Especializado', image: '' }] },
 ];
 
 export const DEFAULT_PROPERTIES = [
@@ -30,27 +31,23 @@ const DEFAULT_DATA = {
 const DataContext = createContext(null);
 
 export function DataProvider({ children }) {
-  const [data, setData] = useState(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return {
-          advisors: parsed.advisors?.length ? parsed.advisors : DEFAULT_ADVISORS,
-          properties: parsed.properties?.length ? parsed.properties : DEFAULT_PROPERTIES,
-          developments: parsed.developments?.length ? parsed.developments : DEFAULT_DEVELOPMENTS,
-        };
-      }
-    } catch {}
-    return DEFAULT_DATA;
-  });
+  const [data, setData] = useState(DEFAULT_DATA);
+
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/api/cms`)
+      .then(({ data: res }) => {
+        setData({
+          advisors: res.advisors?.length ? res.advisors : DEFAULT_ADVISORS,
+          properties: res.properties?.length ? res.properties : DEFAULT_PROPERTIES,
+          developments: res.developments?.length ? res.developments : DEFAULT_DEVELOPMENTS,
+        });
+      })
+      .catch(() => {}); // sin conexión al backend: se queda con los valores por defecto
+  }, []);
 
   const save = (key, value) => {
-    setData((prev) => {
-      const next = { ...prev, [key]: value };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      return next;
-    });
+    setData((prev) => ({ ...prev, [key]: value }));
+    axios.put(`${BACKEND_URL}/api/cms/${key}`, value);
   };
 
   return (

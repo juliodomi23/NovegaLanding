@@ -52,6 +52,9 @@ __pycache__/
 venv/
 .venv/
 
+# Imágenes subidas desde el panel admin (deben vivir en un volumen persistente, no en git)
+backend/uploads/
+
 # Development tools
 chainlit.md
 .chainlit

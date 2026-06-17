@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Edit2, Trash2, X, Save, LogOut, Award, Home, Building, Eye } from 'lucide-react';
 import { useData, DEFAULT_ADVISORS, DEFAULT_PROPERTIES, DEFAULT_DEVELOPMENTS } from '@/context/DataContext';
+import ImageField from '@/components/admin/ImageField';
 
 const ADMIN_PASSWORD = 'Novega2026';
 
@@ -45,7 +46,7 @@ function Modal({ title, onClose, onSave, children }) {
 }
 
 // ── EMPTY FORMS ────────────────────────────────────────────────────────────
-const emptyAdvisor = () => ({ id: Date.now(), name: '', role: '', certs: [] });
+const emptyAdvisor = () => ({ id: Date.now(), name: '', role: '', photo: '', certs: [] });
 const emptyProperty = () => ({ id: Date.now(), category: 'venta', type: '', title: '', location: '', price: '', currency: 'MXN', beds: '', baths: '', sqm: '', badge: '', image: '' });
 const emptyDevelopment = () => ({ id: Date.now(), title: '', location: '', status: '', statusColor: 'gold', description: '', units: '', delivery: '', type: '', image: '' });
 
@@ -54,23 +55,20 @@ function AdvisorsTab() {
   const { data, save } = useData();
   const [modal, setModal] = useState(null); // null | { mode: 'add'|'edit', item }
   const [draft, setDraft] = useState(null);
-  const [certsText, setCertsText] = useState('');
 
-  const openAdd = () => {
-    const item = emptyAdvisor();
-    setDraft(item);
-    setCertsText('');
-    setModal({ mode: 'add', item });
-  };
+  // Normaliza certs antiguos (strings) a objetos { name, image }
+  const normalizeCerts = (certs) => certs.map(c => (typeof c === 'string' ? { name: c, image: '' } : c));
 
-  const openEdit = (item) => {
-    setDraft({ ...item });
-    setCertsText(item.certs.join('\n'));
-    setModal({ mode: 'edit', item });
-  };
+  const openAdd = () => { setDraft(emptyAdvisor()); setModal({ mode: 'add' }); };
+  const openEdit = (item) => { setDraft({ ...item, certs: normalizeCerts(item.certs) }); setModal({ mode: 'edit', item }); };
+
+  const addCertRow = () => setDraft(p => ({ ...p, certs: [...p.certs, { name: '', image: '' }] }));
+  const updateCertRow = (i, field, val) => setDraft(p => ({ ...p, certs: p.certs.map((c, idx) => idx === i ? { ...c, [field]: val } : c) }));
+  const removeCertRow = (i) => setDraft(p => ({ ...p, certs: p.certs.filter((_, idx) => idx !== i) }));
 
   const saveModal = () => {
-    const final = { ...draft, certs: certsText.split('\n').map(s => s.trim()).filter(Boolean) };
+    const certs = draft.certs.filter(c => c.name.trim());
+    const final = { ...draft, certs };
     if (!final.name) return;
     const list = modal.mode === 'add'
       ? [...data.advisors, final]
@@ -101,13 +99,13 @@ function AdvisorsTab() {
         {data.advisors.map(a => (
           <div key={a.id} className="flex items-center justify-between bg-[#406788]/8 border border-[#406788]/20 px-5 py-4 gap-4">
             <div className="flex items-center gap-4 min-w-0">
-              <div className="w-9 h-9 bg-[#D9AE4E]/10 border border-[#D9AE4E]/25 flex items-center justify-center flex-shrink-0">
-                <Award size={16} className="text-[#D9AE4E]" />
+              <div className="w-9 h-9 bg-[#D9AE4E]/10 border border-[#D9AE4E]/25 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {a.photo ? <img src={a.photo} alt={a.name} className="w-full h-full object-cover" /> : <Award size={16} className="text-[#D9AE4E]" />}
               </div>
               <div className="min-w-0">
                 <div className="text-sm font-sans text-[#EEF2F8] truncate">{a.name}</div>
                 <div className="text-xs text-[#7A9BB5] font-sans">{a.role}</div>
-                <div className="text-[11px] text-[#D9AE4E]/70 font-sans mt-0.5">{a.certs.join(' · ')}</div>
+                <div className="text-[11px] text-[#D9AE4E]/70 font-sans mt-0.5">{a.certs.map(c => typeof c === 'string' ? c : c.name).join(' · ')}</div>
               </div>
             </div>
             <div className="flex gap-2 flex-shrink-0">
@@ -126,14 +124,31 @@ function AdvisorsTab() {
           <Field label="Cargo / Especialidad">
             <input className={inp} value={draft.role} onChange={e => setDraft(p => ({ ...p, role: e.target.value }))} placeholder="Especialista en Bienes Raíces" />
           </Field>
-          <Field label="Certificaciones (una por línea)">
-            <textarea
-              className={`${inp} resize-none`}
-              rows={4}
-              value={certsText}
-              onChange={e => setCertsText(e.target.value)}
-              placeholder={'Certificado AMPI\nValuador Certificado\nDerecho Fiscal'}
-            />
+          <Field label="Foto del asesor">
+            <ImageField value={draft.photo} onChange={v => setDraft(p => ({ ...p, photo: v }))} />
+          </Field>
+          <Field label="Certificaciones">
+            <div className="space-y-3">
+              {draft.certs.map((cert, i) => (
+                <div key={i} className="flex gap-2 items-start bg-[#0A1628]/40 p-3 border border-[#406788]/20">
+                  <div className="flex-1 space-y-2">
+                    <input
+                      className={inp}
+                      value={cert.name}
+                      onChange={e => updateCertRow(i, 'name', e.target.value)}
+                      placeholder="Nombre de la certificación"
+                    />
+                    <ImageField value={cert.image} onChange={v => updateCertRow(i, 'image', v)} aspect="aspect-square w-10" />
+                  </div>
+                  <button onClick={() => removeCertRow(i)} className="p-1.5 text-[#7A9BB5] hover:text-red-400 transition-colors cursor-pointer flex-shrink-0">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))}
+              <button onClick={addCertRow} className={`${btn} border border-[#406788]/40 text-[#7A9BB5] hover:text-white cursor-pointer`}>
+                <Plus size={14} /> Agregar certificación
+              </button>
+            </div>
           </Field>
         </Modal>
       )}
@@ -249,14 +264,9 @@ function PropertiesTab() {
           <Field label="Etiqueta (badge)">
             <input className={inp} value={draft.badge} onChange={e => set('badge', e.target.value)} placeholder="DESTACADO" />
           </Field>
-          <Field label="URL de imagen">
-            <input className={inp} value={draft.image} onChange={e => set('image', e.target.value)} placeholder="https://..." />
+          <Field label="Imagen">
+            <ImageField value={draft.image} onChange={v => set('image', v)} aspect="aspect-video w-full" />
           </Field>
-          {draft.image && (
-            <div className="aspect-video overflow-hidden border border-[#406788]/30">
-              <img src={draft.image} alt="preview" className="w-full h-full object-cover" onError={e => { e.target.style.display = 'none'; }} />
-            </div>
-          )}
         </Modal>
       )}
     </div>
@@ -355,14 +365,9 @@ function DevelopmentsTab() {
               <input className={inp} value={draft.delivery} onChange={e => set('delivery', e.target.value)} placeholder="Q4 2026" />
             </Field>
           </div>
-          <Field label="URL de imagen">
-            <input className={inp} value={draft.image} onChange={e => set('image', e.target.value)} placeholder="https://..." />
+          <Field label="Imagen">
+            <ImageField value={draft.image} onChange={v => set('image', v)} aspect="aspect-video w-full" />
           </Field>
-          {draft.image && (
-            <div className="aspect-video overflow-hidden border border-[#406788]/30">
-              <img src={draft.image} alt="preview" className="w-full h-full object-cover" onError={e => { e.target.style.display = 'none'; }} />
-            </div>
-          )}
         </Modal>
       )}
     </div>
