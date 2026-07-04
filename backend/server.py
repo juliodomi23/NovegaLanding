@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+import httpx
 import os
 import logging
 from pathlib import Path
@@ -24,6 +25,9 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 ALLOWED_IMAGE_TYPES = {'image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml'}
 MAX_UPLOAD_SIZE = 5 * 1024 * 1024  # 5MB
 CMS_COLLECTIONS = {'advisors', 'properties', 'developments'}
+
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', 'novegabienesraices@gmail.com')
 
 app = FastAPI(title="Grupo Novega API")
 api_router = APIRouter(prefix="/api")
@@ -75,12 +79,44 @@ async def root():
     return {"message": "Grupo Novega API - OK"}
 
 
+async def send_contact_email(data: ContactMessageCreate):
+    if not RESEND_API_KEY:
+        logger.warning("RESEND_API_KEY no configurada, no se envía correo")
+        return
+    tipo = "Solicitud de empleo" if data.msg_type == "job_application" else "Mensaje de contacto"
+    body = (
+        f"<h2>{tipo} desde la página web</h2>"
+        f"<p><b>Nombre:</b> {data.name}</p>"
+        f"<p><b>Email:</b> {data.email}</p>"
+        f"<p><b>Teléfono:</b> {data.phone or 'No proporcionado'}</p>"
+        f"<p><b>Mensaje:</b></p><p>{data.message}</p>"
+    )
+    try:
+        async with httpx.AsyncClient(timeout=10) as http:
+            resp = await http.post(
+                "https://api.resend.com/emails",
+                headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
+                json={
+                    "from": "Grupo Novega Web <onboarding@resend.dev>",
+                    "to": [CONTACT_EMAIL],
+                    "reply_to": data.email,
+                    "subject": f"{tipo}: {data.name}",
+                    "html": body,
+                },
+            )
+        if resp.status_code >= 400:
+            logger.error(f"Resend error {resp.status_code}: {resp.text}")
+    except Exception as e:
+        logger.error(f"No se pudo enviar el correo de contacto: {e}")
+
+
 @api_router.post("/contact")
 async def create_contact_message(data: ContactMessageCreate):
     msg = ContactMessage(**data.model_dump())
     doc = msg.model_dump()
     await db.contact_messages.insert_one(doc)
     logger.info(f"New contact message from {data.email} (type: {data.msg_type})")
+    await send_contact_email(data)
     return {"success": True, "message": "Mensaje recibido correctamente"}
 
 

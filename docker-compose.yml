@@ -13,6 +13,8 @@ services:
       MONGO_URL: mongodb://mongo:27017
       DB_NAME: novega
       CORS_ORIGINS: "*"
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      CONTACT_EMAIL: novegabienesraices@gmail.com
     volumes:
       - uploads_data:/app/uploads
     depends_on:
