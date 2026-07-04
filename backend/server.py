@@ -97,7 +97,7 @@ async def send_contact_email(data: ContactMessageCreate):
                 "https://api.resend.com/emails",
                 headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
                 json={
-                    "from": "Grupo Novega Web <onboarding@resend.dev>",
+                    "from": "Grupo Novega Web <web@novegabienesraices.com>",
                     "to": [CONTACT_EMAIL],
                     "reply_to": data.email,
                     "subject": f"{tipo}: {data.name}",
