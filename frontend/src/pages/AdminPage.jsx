@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit2, Trash2, X, Save, LogOut, Award, Home, Building, Eye } from 'lucide-react';
+import axios from 'axios';
+import { Plus, Edit2, Trash2, X, Save, LogOut, Award, Home, Building, Eye, KeyRound } from 'lucide-react';
 import { useData, DEFAULT_ADVISORS, DEFAULT_PROPERTIES, DEFAULT_DEVELOPMENTS } from '@/context/DataContext';
 import ImageField from '@/components/admin/ImageField';
 
-const ADMIN_PASSWORD = 'Novega2026';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 // ── Estilos reutilizables ──────────────────────────────────────────────────
 const inp = 'w-full bg-[#0A1628] border border-[#406788]/40 text-[#EEF2F8] placeholder-[#406788]/60 text-sm px-3 py-2.5 focus:outline-none focus:border-[#D9AE4E]/60 transition-colors';
@@ -374,20 +375,79 @@ function DevelopmentsTab() {
   );
 }
 
+// ── MODAL: CAMBIAR CONTRASEÑA ───────────────────────────────────────────────
+function ChangePasswordModal({ onClose }) {
+  const [currentPw, setCurrentPw] = useState('');
+  const [newPw, setNewPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
+  const [error, setError] = useState('');
+  const [ok, setOk] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (newPw !== confirmPw) return setError('Las contraseñas nuevas no coinciden');
+    setSaving(true);
+    try {
+      await axios.put(`${BACKEND_URL}/api/admin/password`, { current_password: currentPw, new_password: newPw });
+      setOk(true);
+    } catch (err) {
+      setError(err.response?.data?.detail || 'No se pudo cambiar la contraseña');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Modal title="Cambiar contraseña" onClose={onClose} onSave={submit}>
+      {ok ? (
+        <p className="text-sm text-[#D9AE4E] font-sans">Contraseña actualizada correctamente.</p>
+      ) : (
+        <form onSubmit={submit} className="space-y-4">
+          <Field label="Contraseña actual">
+            <input type="password" className={inp} value={currentPw} onChange={e => setCurrentPw(e.target.value)} />
+          </Field>
+          <Field label="Nueva contraseña">
+            <input type="password" className={inp} value={newPw} onChange={e => setNewPw(e.target.value)} />
+          </Field>
+          <Field label="Confirmar nueva contraseña">
+            <input type="password" className={inp} value={confirmPw} onChange={e => setConfirmPw(e.target.value)} />
+          </Field>
+          {error && <p className="text-red-400 text-xs font-sans">{error}</p>}
+        </form>
+      )}
+    </Modal>
+  );
+}
+
 // ── MAIN ADMIN PAGE ────────────────────────────────────────────────────────
 export default function AdminPage() {
   const navigate = useNavigate();
+  const { loading } = useData();
   const [authed, setAuthed] = useState(() => sessionStorage.getItem('novega_admin') === '1');
   const [pw, setPw] = useState('');
   const [error, setError] = useState(false);
-  const [tab, setTab] = useState('asesores');
+  const [tab, setTab] = useState(() => sessionStorage.getItem('novega_admin_tab') || 'asesores');
+  const [showPwModal, setShowPwModal] = useState(false);
 
-  const login = (e) => {
+  const changeTab = (key) => {
+    setTab(key);
+    sessionStorage.setItem('novega_admin_tab', key);
+  };
+
+  const login = async (e) => {
     e.preventDefault();
-    if (pw === ADMIN_PASSWORD) {
-      sessionStorage.setItem('novega_admin', '1');
-      setAuthed(true);
-    } else {
+    try {
+      const { data } = await axios.post(`${BACKEND_URL}/api/admin/login`, { password: pw });
+      if (data.success) {
+        sessionStorage.setItem('novega_admin', '1');
+        setAuthed(true);
+      } else {
+        setError(true);
+        setPw('');
+      }
+    } catch {
       setError(true);
       setPw('');
     }
@@ -440,6 +500,10 @@ export default function AdminPage() {
     );
   }
 
+  if (loading) {
+    return <div className="min-h-screen bg-[#0A1628] flex items-center justify-center text-[#7A9BB5] font-sans text-sm">Cargando...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-[#0A1628]">
       {/* Admin Header */}
@@ -450,6 +514,12 @@ export default function AdminPage() {
           <span className="text-[#7A9BB5] text-xs font-sans">Grupo Novega Bienes Raíces</span>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowPwModal(true)}
+            className={`${btn} border border-[#406788]/40 text-[#7A9BB5] hover:text-[#D9AE4E] hover:border-[#D9AE4E]/40 cursor-pointer`}
+          >
+            <KeyRound size={13} /> Contraseña
+          </button>
           <button
             onClick={() => navigate('/')}
             className={`${btn} border border-[#406788]/40 text-[#7A9BB5] hover:text-[#D9AE4E] hover:border-[#D9AE4E]/40 cursor-pointer`}
@@ -462,13 +532,15 @@ export default function AdminPage() {
         </div>
       </header>
 
+      {showPwModal && <ChangePasswordModal onClose={() => setShowPwModal(false)} />}
+
       <div className="max-w-4xl mx-auto px-6 py-10">
         {/* Tab Nav */}
         <div className="flex gap-1 mb-8 border-b border-[#406788]/25">
           {TABS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
-              onClick={() => setTab(key)}
+              onClick={() => changeTab(key)}
               className={`flex items-center gap-2 px-5 py-3 text-xs tracking-[0.12em] uppercase font-sans font-medium border-b-2 -mb-px transition-all duration-200 cursor-pointer ${
                 tab === key
                   ? 'border-[#D9AE4E] text-[#D9AE4E]'

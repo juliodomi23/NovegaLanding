@@ -32,6 +32,7 @@ const DataContext = createContext(null);
 
 export function DataProvider({ children }) {
   const [data, setData] = useState(DEFAULT_DATA);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/api/cms`)
@@ -42,7 +43,8 @@ export function DataProvider({ children }) {
           developments: res.developments?.length ? res.developments : DEFAULT_DEVELOPMENTS,
         });
       })
-      .catch(() => {}); // sin conexión al backend: se queda con los valores por defecto
+      .catch(() => {}) // sin conexión al backend: se queda con los valores por defecto
+      .finally(() => setLoading(false));
   }, []);
 
   const save = (key, value) => {
@@ -51,7 +53,7 @@ export function DataProvider({ children }) {
   };
 
   return (
-    <DataContext.Provider value={{ data, save }}>
+    <DataContext.Provider value={{ data, save, loading }}>
       {children}
     </DataContext.Provider>
   );

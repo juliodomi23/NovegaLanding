@@ -51,6 +51,23 @@ class ContactMessage(BaseModel):
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
+class LoginRequest(BaseModel):
+    password: str
+
+
+class PasswordUpdate(BaseModel):
+    current_password: str
+    new_password: str
+
+
+DEFAULT_ADMIN_PASSWORD = "Novega2026"
+
+
+async def get_admin_password():
+    doc = await db.settings.find_one({"_id": "admin"})
+    return doc["password"] if doc else DEFAULT_ADMIN_PASSWORD
+
+
 # ── Routes ───────────────────────────────────────────────────────────────────
 
 @api_router.get("/")
@@ -89,6 +106,23 @@ async def save_cms_collection(collection: str, items: List[dict] = Body(...)):
     if collection not in CMS_COLLECTIONS:
         raise HTTPException(status_code=404, detail="Colección no encontrada")
     await db.cms.update_one({"_id": collection}, {"$set": {"items": items}}, upsert=True)
+    return {"success": True}
+
+
+# ── Admin auth ────────────────────────────────────────────────────────────────
+
+@api_router.post("/admin/login")
+async def admin_login(data: LoginRequest):
+    return {"success": data.password == await get_admin_password()}
+
+
+@api_router.put("/admin/password")
+async def change_admin_password(data: PasswordUpdate):
+    if data.current_password != await get_admin_password():
+        raise HTTPException(status_code=401, detail="Contraseña actual incorrecta")
+    if len(data.new_password) < 4:
+        raise HTTPException(status_code=400, detail="La nueva contraseña debe tener al menos 4 caracteres")
+    await db.settings.update_one({"_id": "admin"}, {"$set": {"password": data.new_password}}, upsert=True)
     return {"success": True}
 
 
