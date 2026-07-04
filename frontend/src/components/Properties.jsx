@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { BedDouble, Bath, Maximize, MapPin, MessageCircle } from 'lucide-react';
+import { BedDouble, Bath, Maximize, MapPin, MessageCircle, Home } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 import { useData } from '@/context/DataContext';
+import DetailModal from '@/components/DetailModal';
 
 const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20una%20propiedad.';
 
@@ -14,6 +15,7 @@ export default function Properties() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [filter, setFilter] = useState('all');
+  const [selected, setSelected] = useState(null);
 
   const filtered = filter === 'all' ? data.properties : data.properties.filter(p => p.category === filter);
 
@@ -75,9 +77,22 @@ export default function Properties() {
               data-testid={`property-card-${property.id}`}
               className="group relative overflow-hidden bg-[#406788]/8 border border-[#406788]/15 hover:border-[#406788]/40 transition-all duration-500"
             >
-              <div className="relative overflow-hidden aspect-[4/3]">
-                <img src={property.image} alt={property.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
+              <button
+                onClick={() => setSelected(property)}
+                className="relative overflow-hidden aspect-[4/3] w-full cursor-pointer block"
+                aria-label={t.detailsCta}
+              >
+                {property.image ? (
+                  <img src={property.image} alt={property.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
+                ) : (
+                  <div className="w-full h-full bg-[#406788]/15 flex items-center justify-center">
+                    <Home size={32} className="text-[#406788]" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
+                  <span className="text-[11px] tracking-[0.15em] uppercase font-sans font-medium text-white border border-white/50 px-4 py-2">{t.detailsCta}</span>
+                </div>
                 <div className="absolute top-4 left-4 bg-[#0A1628]/80 backdrop-blur-sm border border-[#406788]/25 px-3 py-1">
                   <span className="text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans">{property.type}</span>
                 </div>
@@ -86,7 +101,7 @@ export default function Properties() {
                     <span className={`text-[10px] tracking-[0.18em] uppercase font-sans font-semibold ${property.category === 'renta' ? 'text-white' : 'text-black'}`}>{property.badge}</span>
                   </div>
                 )}
-              </div>
+              </button>
               <div className="p-6">
                 <h3 className="text-lg font-serif text-[#EEF2F8] mb-2 group-hover:text-[#D9AE4E] transition-colors duration-300">{property.title}</h3>
                 <div className="flex items-center gap-1.5 mb-4">
@@ -137,6 +152,40 @@ export default function Properties() {
           </a>
         </motion.div>
       </div>
+
+      {selected && (
+        <DetailModal
+          title={selected.title}
+          location={selected.location}
+          image={selected.image}
+          fallbackIcon={Home}
+          whatsappUrl={WHATSAPP_URL}
+          whatsappLabel={t.contactCta}
+          onClose={() => setSelected(null)}
+        >
+          <div className="flex items-end justify-between mb-5">
+            <div>
+              <span className="text-2xl font-serif text-[#D9AE4E] font-medium">{selected.price}</span>
+              <span className="text-sm text-[#7A9BB5] font-sans ml-1">{selected.currency}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-5 pb-5 border-b border-[#406788]/25 text-sm">
+            {selected.beds != null && (
+              <div className="flex items-center gap-1.5 text-[#7A9BB5] font-sans">
+                <BedDouble size={14} className="text-[#7A9BB5]" /> {selected.beds} {t.beds}
+              </div>
+            )}
+            {selected.baths != null && (
+              <div className="flex items-center gap-1.5 text-[#7A9BB5] font-sans">
+                <Bath size={14} className="text-[#7A9BB5]" /> {selected.baths} {t.baths}
+              </div>
+            )}
+            <div className="flex items-center gap-1.5 text-[#7A9BB5] font-sans">
+              <Maximize size={14} className="text-[#7A9BB5]" /> {selected.sqm} {t.sqm}
+            </div>
+          </div>
+        </DetailModal>
+      )}
     </section>
   );
 }

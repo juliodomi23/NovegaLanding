@@ -124,6 +124,7 @@ export const translations = {
       titleAccent: 'Rentas',
       subtitle: 'Selección de inmuebles premium en Tuxtla Gutiérrez y zonas de alto valor en Chiapas.',
       contactCta: 'Solicitar Información',
+      detailsCta: 'Ver Detalles',
       viewAll: 'Ver Todas las Propiedades',
       beds: 'Hab',
       baths: 'Baños',
@@ -182,6 +183,7 @@ export const translations = {
       titleAccent: 'Inmobiliarios',
       subtitle: 'Proyectos de desarrollo residencial y comercial con los más altos estándares de calidad en Chiapas.',
       statusLabel: 'Estado',
+      detailsCta: 'Ver Detalles',
       items: [
         {
           id: 1,
@@ -520,6 +522,7 @@ export const translations = {
       titleAccent: 'Rentals',
       subtitle: 'A selection of premium properties in Tuxtla Gutiérrez and high-value areas of Chiapas.',
       contactCta: 'Request Information',
+      detailsCta: 'View Details',
       viewAll: 'View All Properties',
       beds: 'Beds',
       baths: 'Baths',
@@ -578,6 +581,7 @@ export const translations = {
       titleAccent: 'Developments',
       subtitle: 'Residential and commercial development projects with the highest quality standards in Chiapas.',
       statusLabel: 'Status',
+      detailsCta: 'View Details',
       items: [
         {
           id: 1,

@@ -1,9 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { MapPin, Calendar, Layers, MessageCircle } from 'lucide-react';
+import { MapPin, Calendar, Layers, MessageCircle, Building } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/constants/translations';
 import { useData } from '@/context/DataContext';
+import DetailModal from '@/components/DetailModal';
 
 const WHATSAPP_URL = 'https://wa.me/529614625879?text=Hola%20Grupo%20Novega%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20sus%20proyectos%20de%20desarrollo.';
 
@@ -19,6 +20,7 @@ export default function Desarrollos() {
   const { data } = useData();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const [selected, setSelected] = useState(null);
 
   return (
     <section id="desarrollos" className="py-24 md:py-32 bg-[#132436]" ref={ref}>
@@ -48,13 +50,22 @@ export default function Desarrollos() {
               transition={{ duration: 0.6, delay: i * 0.15 }}
               className="group overflow-hidden bg-[#406788]/8 border border-[#406788]/15 hover:border-[#D9AE4E]/30 transition-all duration-500"
             >
-              <div className="relative overflow-hidden aspect-[16/9]">
-                <img src={dev.image} alt={dev.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
+              <button onClick={() => setSelected(dev)} className="relative overflow-hidden aspect-[16/9] w-full cursor-pointer block">
+                {dev.image ? (
+                  <img src={dev.image} alt={dev.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
+                ) : (
+                  <div className="w-full h-full bg-[#406788]/15 flex items-center justify-center">
+                    <Building size={32} className="text-[#406788]" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
+                  <span className="text-[11px] tracking-[0.15em] uppercase font-sans font-medium text-white border border-white/50 px-4 py-2">{t.detailsCta}</span>
+                </div>
                 <div className={`absolute top-4 left-4 px-3 py-1 ${STATUS_STYLES[dev.statusColor] || STATUS_STYLES.muted}`}>
                   <span className="text-[10px] tracking-[0.15em] uppercase font-sans font-semibold">{dev.status}</span>
                 </div>
-              </div>
+              </button>
               <div className="p-6">
                 <div className="text-[10px] tracking-[0.18em] uppercase text-[#7A9BB5] font-sans mb-2">{dev.type}</div>
                 <h3 className="text-xl font-serif text-[#EEF2F8] mb-2 group-hover:text-[#D9AE4E] transition-colors duration-300">{dev.title}</h3>
@@ -82,6 +93,28 @@ export default function Desarrollos() {
           ))}
         </div>
       </div>
+
+      {selected && (
+        <DetailModal
+          title={selected.title}
+          location={selected.location}
+          image={selected.image}
+          fallbackIcon={Building}
+          whatsappUrl={WHATSAPP_URL}
+          whatsappLabel={t.cta}
+          onClose={() => setSelected(null)}
+        >
+          <p className="text-sm text-[#7A9BB5] font-sans font-light leading-relaxed mb-5">{selected.description}</p>
+          <div className="flex items-center gap-5 pb-5 border-b border-[#406788]/25 text-sm">
+            <div className="flex items-center gap-1.5 text-[#7A9BB5] font-sans">
+              <Layers size={14} className="text-[#D9AE4E]" /> {selected.units}
+            </div>
+            <div className="flex items-center gap-1.5 text-[#7A9BB5] font-sans">
+              <Calendar size={14} className="text-[#D9AE4E]" /> {selected.delivery}
+            </div>
+          </div>
+        </DetailModal>
+      )}
     </section>
   );
 }
