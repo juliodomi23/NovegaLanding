@@ -9,16 +9,20 @@ export default function MultiImageField({ value = [], onChange, max = 5, aspect 
   const [error, setError] = useState('');
 
   const handleFile = async (e) => {
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files).slice(0, max - value.length);
     e.target.value = '';
-    if (!file) return;
+    if (!files.length) return;
     setError('');
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const { data } = await axios.post(`${BACKEND_URL}/api/upload`, formData);
-      onChange([...value, `${BACKEND_URL}${data.url}`]);
+      const urls = [];
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const { data } = await axios.post(`${BACKEND_URL}/api/upload`, formData);
+        urls.push(`${BACKEND_URL}${data.url}`);
+      }
+      onChange([...value, ...urls]);
     } catch (err) {
       setError(err.response?.data?.detail || 'No se pudo subir la imagen');
     } finally {
@@ -46,7 +50,7 @@ export default function MultiImageField({ value = [], onChange, max = 5, aspect 
         {value.length < max && (
           <label className={`flex flex-col items-center justify-center gap-1 ${aspect} border border-dashed border-[#406788]/40 text-[#7A9BB5] hover:text-white hover:border-[#D9AE4E]/60 transition-colors ${uploading ? 'opacity-60' : 'cursor-pointer'}`}>
             {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-            <input type="file" accept="image/*" className="hidden" onChange={handleFile} disabled={uploading} />
+            <input type="file" accept="image/*" multiple className="hidden" onChange={handleFile} disabled={uploading} />
           </label>
         )}
       </div>
