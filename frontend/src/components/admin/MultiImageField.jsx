@@ -4,9 +4,19 @@ import { Upload, Loader2, X } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+const inp = 'flex-1 bg-[#0A1628] border border-[#406788]/40 text-[#EEF2F8] placeholder-[#406788]/60 text-xs px-3 py-2 focus:outline-none focus:border-[#D9AE4E]/60 transition-colors';
+
 export default function MultiImageField({ value = [], onChange, max = 5, aspect = 'aspect-square w-16' }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [urlText, setUrlText] = useState('');
+
+  const addUrls = () => {
+    const urls = urlText.split(/[\n,]+/).map(u => u.trim()).filter(Boolean).slice(0, max - value.length);
+    if (!urls.length) return;
+    onChange([...value, ...urls]);
+    setUrlText('');
+  };
 
   const handleFile = async (e) => {
     const files = Array.from(e.target.files).slice(0, max - value.length);
@@ -54,6 +64,20 @@ export default function MultiImageField({ value = [], onChange, max = 5, aspect 
           </label>
         )}
       </div>
+      {value.length < max && (
+        <div className="flex gap-2">
+          <input
+            className={inp}
+            value={urlText}
+            onChange={e => setUrlText(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addUrls(); } }}
+            placeholder="Pega una o varias URLs (separadas por coma o salto de línea)"
+          />
+          <button type="button" onClick={addUrls} className="px-3 border border-[#406788]/40 text-[#7A9BB5] hover:text-white hover:border-[#D9AE4E]/60 text-xs font-sans flex-shrink-0 transition-colors cursor-pointer">
+            Agregar
+          </button>
+        </div>
+      )}
       <p className="text-[11px] text-[#7A9BB5]/70 font-sans">{value.length}/{max} fotos</p>
       {error && <p className="text-[11px] text-red-400 font-sans">{error}</p>}
     </div>
