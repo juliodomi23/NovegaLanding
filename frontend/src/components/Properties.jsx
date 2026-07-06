@@ -82,8 +82,8 @@ export default function Properties() {
                 className="relative overflow-hidden aspect-[4/3] w-full cursor-pointer block"
                 aria-label={t.detailsCta}
               >
-                {property.image ? (
-                  <img src={property.image} alt={property.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
+                {property.images?.[0] ? (
+                  <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
                 ) : (
                   <div className="w-full h-full bg-[#406788]/15 flex items-center justify-center">
                     <Home size={32} className="text-[#406788]" />
@@ -157,7 +157,7 @@ export default function Properties() {
         <DetailModal
           title={selected.title}
           location={selected.location}
-          image={selected.image}
+          images={selected.images}
           fallbackIcon={Home}
           whatsappUrl={WHATSAPP_URL}
           whatsappLabel={t.contactCta}

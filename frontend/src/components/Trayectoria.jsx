@@ -47,8 +47,8 @@ export default function Trayectoria() {
               className="bg-[#406788]/10 border border-[#406788]/25 hover:border-[#D9AE4E]/40 transition-all duration-500 p-6 flex flex-col"
             >
               <div className="w-14 h-14 bg-[#D9AE4E]/10 border border-[#D9AE4E]/25 flex items-center justify-center mb-5 overflow-hidden">
-                {advisor.photo ? (
-                  <img src={advisor.photo} alt={advisor.name} className="w-full h-full object-cover" />
+                {advisor.photos?.[0] ? (
+                  <img src={advisor.photos[0]} alt={advisor.name} className="w-full h-full object-cover" />
                 ) : (
                   <Award size={22} className="text-[#D9AE4E]" />
                 )}

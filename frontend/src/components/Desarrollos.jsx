@@ -51,8 +51,8 @@ export default function Desarrollos() {
               className="group overflow-hidden bg-[#406788]/8 border border-[#406788]/15 hover:border-[#D9AE4E]/30 transition-all duration-500"
             >
               <button onClick={() => setSelected(dev)} className="relative overflow-hidden aspect-[16/9] w-full cursor-pointer block">
-                {dev.image ? (
-                  <img src={dev.image} alt={dev.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
+                {dev.images?.[0] ? (
+                  <img src={dev.images[0]} alt={dev.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
                 ) : (
                   <div className="w-full h-full bg-[#406788]/15 flex items-center justify-center">
                     <Building size={32} className="text-[#406788]" />
@@ -98,7 +98,7 @@ export default function Desarrollos() {
         <DetailModal
           title={selected.title}
           location={selected.location}
-          image={selected.image}
+          images={selected.images}
           fallbackIcon={Building}
           whatsappUrl={WHATSAPP_URL}
           whatsappLabel={t.cta}

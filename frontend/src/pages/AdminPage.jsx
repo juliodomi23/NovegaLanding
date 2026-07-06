@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Plus, Edit2, Trash2, X, Save, LogOut, Award, Home, Building, Eye, KeyRound } from 'lucide-react';
 import { useData, DEFAULT_ADVISORS, DEFAULT_PROPERTIES, DEFAULT_DEVELOPMENTS } from '@/context/DataContext';
 import ImageField from '@/components/admin/ImageField';
+import MultiImageField from '@/components/admin/MultiImageField';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -47,9 +48,9 @@ function Modal({ title, onClose, onSave, children }) {
 }
 
 // ── EMPTY FORMS ────────────────────────────────────────────────────────────
-const emptyAdvisor = () => ({ id: Date.now(), name: '', role: '', photo: '', certs: [] });
-const emptyProperty = () => ({ id: Date.now(), category: 'venta', type: '', title: '', location: '', price: '', currency: 'MXN', beds: '', baths: '', sqm: '', badge: '', image: '' });
-const emptyDevelopment = () => ({ id: Date.now(), title: '', location: '', status: '', statusColor: 'gold', description: '', units: '', delivery: '', type: '', image: '' });
+const emptyAdvisor = () => ({ id: Date.now(), name: '', role: '', photos: [], certs: [] });
+const emptyProperty = () => ({ id: Date.now(), category: 'venta', type: '', title: '', location: '', price: '', currency: 'MXN', beds: '', baths: '', sqm: '', badge: '', images: [] });
+const emptyDevelopment = () => ({ id: Date.now(), title: '', location: '', status: '', statusColor: 'gold', description: '', units: '', delivery: '', type: '', images: [] });
 
 // ── TAB: ASESORES ──────────────────────────────────────────────────────────
 function AdvisorsTab() {
@@ -101,7 +102,7 @@ function AdvisorsTab() {
           <div key={a.id} className="flex items-center justify-between bg-[#406788]/8 border border-[#406788]/20 px-5 py-4 gap-4">
             <div className="flex items-center gap-4 min-w-0">
               <div className="w-9 h-9 bg-[#D9AE4E]/10 border border-[#D9AE4E]/25 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                {a.photo ? <img src={a.photo} alt={a.name} className="w-full h-full object-cover" /> : <Award size={16} className="text-[#D9AE4E]" />}
+                {a.photos?.[0] ? <img src={a.photos[0]} alt={a.name} className="w-full h-full object-cover" /> : <Award size={16} className="text-[#D9AE4E]" />}
               </div>
               <div className="min-w-0">
                 <div className="text-sm font-sans text-[#EEF2F8] truncate">{a.name}</div>
@@ -125,8 +126,8 @@ function AdvisorsTab() {
           <Field label="Cargo / Especialidad">
             <input className={inp} value={draft.role} onChange={e => setDraft(p => ({ ...p, role: e.target.value }))} placeholder="Especialista en Bienes Raíces" />
           </Field>
-          <Field label="Foto del asesor">
-            <ImageField value={draft.photo} onChange={v => setDraft(p => ({ ...p, photo: v }))} />
+          <Field label="Fotos del asesor (hasta 5)">
+            <MultiImageField value={draft.photos} onChange={v => setDraft(p => ({ ...p, photos: v }))} />
           </Field>
           <Field label="Certificaciones">
             <div className="space-y-3">
@@ -207,7 +208,7 @@ function PropertiesTab() {
         {data.properties.map(p => (
           <div key={p.id} className="flex items-center justify-between bg-[#406788]/8 border border-[#406788]/20 gap-4 overflow-hidden">
             <div className="w-16 h-14 flex-shrink-0">
-              {p.image ? <img src={p.image} alt={p.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-[#406788]/20 flex items-center justify-center"><Home size={16} className="text-[#406788]" /></div>}
+              {p.images?.[0] ? <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-[#406788]/20 flex items-center justify-center"><Home size={16} className="text-[#406788]" /></div>}
             </div>
             <div className="flex-1 min-w-0 py-2">
               <div className="flex items-center gap-2 mb-0.5">
@@ -265,8 +266,8 @@ function PropertiesTab() {
           <Field label="Etiqueta (badge)">
             <input className={inp} value={draft.badge} onChange={e => set('badge', e.target.value)} placeholder="DESTACADO" />
           </Field>
-          <Field label="Imagen">
-            <ImageField value={draft.image} onChange={v => set('image', v)} aspect="aspect-video w-full" />
+          <Field label="Fotos (hasta 5)">
+            <MultiImageField value={draft.images} onChange={v => set('images', v)} aspect="aspect-video w-24" />
           </Field>
         </Modal>
       )}
@@ -318,7 +319,7 @@ function DevelopmentsTab() {
         {data.developments.map(d => (
           <div key={d.id} className="flex items-center justify-between bg-[#406788]/8 border border-[#406788]/20 gap-4 overflow-hidden">
             <div className="w-16 h-14 flex-shrink-0">
-              {d.image ? <img src={d.image} alt={d.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-[#406788]/20 flex items-center justify-center"><Building size={16} className="text-[#406788]" /></div>}
+              {d.images?.[0] ? <img src={d.images[0]} alt={d.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-[#406788]/20 flex items-center justify-center"><Building size={16} className="text-[#406788]" /></div>}
             </div>
             <div className="flex-1 min-w-0 py-2">
               <div className="text-sm font-sans text-[#EEF2F8] truncate">{d.title}</div>
@@ -366,8 +367,8 @@ function DevelopmentsTab() {
               <input className={inp} value={draft.delivery} onChange={e => set('delivery', e.target.value)} placeholder="Q4 2026" />
             </Field>
           </div>
-          <Field label="Imagen">
-            <ImageField value={draft.image} onChange={v => set('image', v)} aspect="aspect-video w-full" />
+          <Field label="Fotos (hasta 5)">
+            <MultiImageField value={draft.images} onChange={v => set('images', v)} aspect="aspect-video w-24" />
           </Field>
         </Modal>
       )}

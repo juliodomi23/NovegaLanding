@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import { X, MapPin, MessageCircle } from 'lucide-react';
 
-export default function DetailModal({ title, location, image, fallbackIcon: FallbackIcon, children, whatsappUrl, whatsappLabel, onClose }) {
+export default function DetailModal({ title, location, images = [], fallbackIcon: FallbackIcon, children, whatsappUrl, whatsappLabel, onClose }) {
   const mapSrc = location ? `https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed` : null;
+  const [active, setActive] = useState(0);
+  const photos = images.filter(Boolean);
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-8 px-4 pb-8 bg-black/80 backdrop-blur-sm overflow-y-auto" onClick={onClose}>
       <div className="bg-[#0D1E30] border border-[#406788]/40 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="relative aspect-video overflow-hidden bg-[#406788]/15">
-          {image ? (
-            <img src={image} alt={title} className="w-full h-full object-cover" />
+          {photos.length > 0 ? (
+            <img src={photos[active] || photos[0]} alt={title} className="w-full h-full object-cover" />
           ) : (
             FallbackIcon && (
               <div className="w-full h-full flex items-center justify-center">
@@ -23,6 +26,19 @@ export default function DetailModal({ title, location, image, fallbackIcon: Fall
             <X size={18} />
           </button>
         </div>
+        {photos.length > 1 && (
+          <div className="flex gap-2 p-3 border-b border-[#406788]/25 overflow-x-auto">
+            {photos.map((url, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                className={`w-14 h-14 flex-shrink-0 overflow-hidden border transition-colors cursor-pointer ${i === active ? 'border-[#D9AE4E]' : 'border-[#406788]/30 opacity-70 hover:opacity-100'}`}
+              >
+                <img src={url} alt={`${title} ${i + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
         <div className="p-6 md:p-8">
           <h3 className="text-2xl font-serif text-[#EEF2F8] mb-2">{title}</h3>
           {location && (
